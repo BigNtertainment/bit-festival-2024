@@ -4,15 +4,16 @@ using System.Collections.Generic;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField]
-    int capacity;
+    [SerializeField] private int capacity;
 
-    [SerializeField]
-    List<ItemData> items = new List<ItemData>();
+    [SerializeField] private List<ItemData> items = new();
 
     public event Action InventoryUpdated;
 
-    public bool AtCapacity() {
+    public int? SelectedSlot { get; private set; }
+
+    public bool AtCapacity()
+    {
         return items.Count >= capacity;
     }
 
@@ -26,13 +27,27 @@ public class Inventory : MonoBehaviour
         return items;
     }
 
-    public void AddItem(ItemData item) {
-        if(AtCapacity()) {
+    public void AddItem(ItemData item)
+    {
+        if (AtCapacity())
+        {
             Debug.LogError("Can't add items to inventory at its capacity!");
             return;
         }
 
         items.Add(item);
+        InventoryUpdated?.Invoke();
+    }
+
+    public void ToggleSelectedSlot(int? slot)
+    {
+        if (slot >= items.Count)
+        {
+            return;
+        }
+
+        var isSlotAlreadySelected = slot == SelectedSlot;
+        SelectedSlot = isSlotAlreadySelected ? null : slot;
         InventoryUpdated?.Invoke();
     }
 }
