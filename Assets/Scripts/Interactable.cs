@@ -9,6 +9,9 @@ public class Interactable : MonoBehaviour
     UnityEvent<ItemData> action;
 
     [SerializeField]
+    bool playerInteractable = true;
+
+    [SerializeField]
     float reachableDistance = 2.5f;
 
     [SerializeField]
@@ -16,7 +19,7 @@ public class Interactable : MonoBehaviour
 
     [SerializeField]
     private Color reachableOutlineColor;
-    
+
     [SerializeField]
     private Color unreachableOutlineColor;
 
@@ -28,7 +31,8 @@ public class Interactable : MonoBehaviour
 
     private bool reachable = false;
 
-    void Start() {
+    void Start()
+    {
         interactableRenderer = GetComponent<Renderer>();
         interactableTransform = GetComponent<Transform>();
 
@@ -38,20 +42,37 @@ public class Interactable : MonoBehaviour
         playerTool = player.GetComponent<Tooled>();
     }
 
-    void OnMouseOver() {
+    void OnMouseOver()
+    {
         // Set the scale on the shader material
-        interactableRenderer.materials[1].SetFloat("_Scale", outlineScale);
+        if (playerInteractable)
+        {
+            interactableRenderer.materials[1].SetFloat("_Scale", outlineScale);
+        }
     }
 
-    void OnMouseExit() {
+    void OnMouseExit()
+    {
         // Set the scale to zero to disable the outline
-        interactableRenderer.materials[1].SetFloat("_Scale", 0.0f);
+        if (playerInteractable)
+        {
+            interactableRenderer.materials[1].SetFloat("_Scale", 0.0f);
+        }
     }
 
-    void OnMouseDown() {
-        if(reachable) {
+    void OnMouseDown()
+    {
+        if (!playerInteractable)
+        {
+            return;
+        }
+
+        if (reachable)
+        {
             Interact(playerTool.toolHeld);
-        } else {
+        }
+        else
+        {
             playerMovement.SetDestination(
                 interactableTransform.position
                     + (playerTransform.position - interactableTransform.position).normalized
@@ -72,12 +93,14 @@ public class Interactable : MonoBehaviour
         reachable = distanceToPlayer <= reachableDistance;
 
         Color outlineColor = reachable ? reachableOutlineColor : unreachableOutlineColor;
-        interactableRenderer.materials[1].SetColor("_OutlineColor", outlineColor);
+        if (playerInteractable && interactableRenderer)
+        {
+            interactableRenderer.materials[1].SetColor("_OutlineColor", outlineColor);
+        }
     }
 
-    public void Interact(ItemData tool) {
-        if(reachable) {
-            action.Invoke(tool);
-        }
+    public void Interact(ItemData tool)
+    {
+        action.Invoke(tool);
     }
 }
