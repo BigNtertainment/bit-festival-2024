@@ -62,6 +62,7 @@ public class DialogueManager : MonoBehaviour
 
     private void OnAnswerSelected(DialogueAnswer dialogueAnswer)
     {
+        dialogueAnswer.OnClickAction?.Invoke();
         if (dialogueAnswer.NextDialogueLine is { } nextDialogueLine)
         {
             _currentDialogueLine = nextDialogueLine;
