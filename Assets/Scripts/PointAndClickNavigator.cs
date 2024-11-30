@@ -5,11 +5,11 @@ public class PointAndClickNavigator : MonoBehaviour
 {
     public Camera mainCamera;
 
-    private NavMeshAgent _navMeshAgent;
+    private MovementIntention movementIntention;
 
     void Start()
     {
-        _navMeshAgent = GetComponent<NavMeshAgent>();
+        movementIntention = GetComponent<MovementIntention>();
     }
 
     void Update()
@@ -33,7 +33,7 @@ public class PointAndClickNavigator : MonoBehaviour
             return;
         }
 
-        _navMeshAgent.SetDestination(mouseWorldPosition);
+        movementIntention.SetDestination(mouseWorldPosition);
     }
 
     /**

@@ -439,6 +439,7 @@ GameObject:
   - component: {fileID: 967767719}
   - component: {fileID: 967767718}
   - component: {fileID: 967767717}
+  - component: {fileID: 967767722}
   m_Layer: 0
   m_Name: Example Item 2
   m_TagString: Untagged
@@ -458,8 +459,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b15bc9820db85b4458588c9dbdcea731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
-  oneTimeUse: 1
+  action:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 967767722}
+        m_TargetAssemblyTypeName: Equipable, Assembly-CSharp
+        m_MethodName: PickUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   reachableDistance: 2.5
   outlineScale: 1.1
   reachableOutlineColor: {r: 1, g: 0.8132778, b: 0, a: 0}
@@ -548,12 +562,26 @@ Transform:
   m_GameObject: {fileID: 967767716}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 5.2}
+  m_LocalPosition: {x: 0, y: 0.5, z: 5.2}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &967767722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967767716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f67eb29f0576e84abae76870f8b4f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: a42827294233d5e4480f2c77c29e526d, type: 2}
+  oneTimeUse: 1
 --- !u!1 &1687169255
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,7 +710,7 @@ MonoBehaviour:
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   m_UseGeometry: 0
   m_DefaultArea: 0
   m_GenerateLinks: 0
@@ -693,7 +721,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 3cffd47bde4a55b40ad48c673d566314, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: a9f3bf8af0da8344db8a9c202482a720, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &1947033059
 GameObject:
@@ -708,6 +736,7 @@ GameObject:
   - component: {fileID: 1947033061}
   - component: {fileID: 1947033060}
   - component: {fileID: 1947033064}
+  - component: {fileID: 1947033065}
   m_Layer: 0
   m_Name: Example Item 1
   m_TagString: Untagged
@@ -799,7 +828,7 @@ Transform:
   m_GameObject: {fileID: 1947033059}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalPosition: {x: 0, y: 0.5, z: 2}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -817,12 +846,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b15bc9820db85b4458588c9dbdcea731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: a42827294233d5e4480f2c77c29e526d, type: 2}
-  oneTimeUse: 1
+  action:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1947033065}
+        m_TargetAssemblyTypeName: Equipable, Assembly-CSharp
+        m_MethodName: PickUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   reachableDistance: 2.5
   outlineScale: 1.1
   reachableOutlineColor: {r: 1, g: 0.8132778, b: 0, a: 0}
   unreachableOutlineColor: {r: 0.98742133, g: 0, b: 0, a: 0}
+--- !u!114 &1947033065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947033059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f67eb29f0576e84abae76870f8b4f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: a42827294233d5e4480f2c77c29e526d, type: 2}
+  oneTimeUse: 1
 --- !u!1 &2021650589
 GameObject:
   m_ObjectHideFlags: 0
@@ -838,6 +894,7 @@ GameObject:
   - component: {fileID: 2021650594}
   - component: {fileID: 2021650596}
   - component: {fileID: 2021650595}
+  - component: {fileID: 2021650597}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -985,6 +1042,18 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &2021650597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2021650589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a75258436799ef44c90a8b1fdc4b58a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
