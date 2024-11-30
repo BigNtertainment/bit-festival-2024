@@ -270,6 +270,10 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   reachableDistance: 2.5
+  reachableDistanceWithItem:
+    _pairs:
+    - _key: {fileID: 11400000, guid: a42827294233d5e4480f2c77c29e526d, type: 2}
+      _value: 15
   outlineScale: 1.1
   reachableOutlineColor: {r: 1, g: 0.8132778, b: 0, a: 0}
   unreachableOutlineColor: {r: 0.98742133, g: 0, b: 0, a: 0}
@@ -629,6 +633,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   reachableDistance: 2.5
+  reachableDistanceWithItem:
+    _pairs: []
   outlineScale: 1.2
   reachableOutlineColor: {r: 1, g: 0.8132778, b: 0, a: 0}
   unreachableOutlineColor: {r: 0.98742133, g: 0, b: 0, a: 0}
@@ -1016,6 +1022,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   reachableDistance: 2.5
+  reachableDistanceWithItem:
+    _pairs: []
   outlineScale: 1.2
   reachableOutlineColor: {r: 1, g: 0.8132778, b: 0, a: 0}
   unreachableOutlineColor: {r: 0.98742133, g: 0, b: 0, a: 0}
