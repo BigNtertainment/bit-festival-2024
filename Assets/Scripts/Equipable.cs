@@ -15,7 +15,11 @@ public class Equipable : MonoBehaviour
         playerInventory = player.GetComponent<Inventory>();
     }
 
-    public void PickUp() {
+    public void PickUp(ItemData tool) {
+        if(tool != null) {
+            return;
+        }
+
         if(!playerInventory.AtCapacity()) {
             playerInventory.AddItem(item);
 

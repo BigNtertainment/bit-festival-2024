@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using System;
 
 public class Interactable : MonoBehaviour
 {
     [SerializeField]
-    UnityEvent action;
+    UnityEvent<ItemData> action;
 
     [SerializeField]
     float reachableDistance = 2.5f;
@@ -23,6 +24,7 @@ public class Interactable : MonoBehaviour
     private Transform interactableTransform;
     private Transform playerTransform;
     private MovementIntention playerMovement;
+    private Tooled playerTool;
 
     private bool reachable = false;
 
@@ -33,6 +35,7 @@ public class Interactable : MonoBehaviour
         GameObject player = GameObject.FindWithTag("Player");
         playerTransform = player.GetComponent<Transform>();
         playerMovement = player.GetComponent<MovementIntention>();
+        playerTool = player.GetComponent<Tooled>();
     }
 
     void OnMouseOver() {
@@ -47,13 +50,14 @@ public class Interactable : MonoBehaviour
 
     void OnMouseDown() {
         if(reachable) {
-            Interact();
+            Interact(playerTool.toolHeld);
         } else {
             playerMovement.SetDestination(
                 interactableTransform.position
                     + (playerTransform.position - interactableTransform.position).normalized
                     * reachableDistance * 0.5f,
-                this
+                this,
+                playerTool.toolHeld
             );
         }
     }
@@ -71,9 +75,9 @@ public class Interactable : MonoBehaviour
         interactableRenderer.materials[1].SetColor("_OutlineColor", outlineColor);
     }
 
-    public void Interact() {
+    public void Interact(ItemData tool) {
         if(reachable) {
-            action.Invoke();
+            action.Invoke(tool);
         }
     }
 }
