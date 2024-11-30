@@ -1,18 +1,18 @@
 using UnityEngine;
-using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class PointAndClickNavigator : MonoBehaviour
 {
     public Camera mainCamera;
 
-    private MovementIntention movementIntention;
+    private MovementIntention _movementIntention;
 
-    void Start()
+    private void Start()
     {
-        movementIntention = GetComponent<MovementIntention>();
+        _movementIntention = GetComponent<MovementIntention>();
     }
 
-    void Update()
+    private void Update()
     {
         if (!Input.GetMouseButtonDown(0))
         {
@@ -28,12 +28,17 @@ public class PointAndClickNavigator : MonoBehaviour
      */
     private void MovePlayerToMouse(Vector3 mouseInputPosition)
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         if (GetMouseWorldPosition(mouseInputPosition) is not { } mouseWorldPosition)
         {
             return;
         }
 
-        movementIntention.SetDestination(mouseWorldPosition);
+        _movementIntention.SetDestination(mouseWorldPosition);
     }
 
     /**
@@ -49,8 +54,10 @@ public class PointAndClickNavigator : MonoBehaviour
 
         const int FLOOR_LAYER = 6;
 
-        if(raycastHitInfo.collider.gameObject.layer != FLOOR_LAYER)
+        if (raycastHitInfo.collider.gameObject.layer != FLOOR_LAYER)
+        {
             return null;
+        }
 
         return raycastHitInfo.point;
     }
