@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -9,8 +10,20 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     List<ItemData> items = new List<ItemData>();
 
+    public event Action InventoryUpdated;
+
     public bool AtCapacity() {
         return items.Count >= capacity;
+    }
+
+    public int GetCapacity()
+    {
+        return capacity;
+    }
+
+    public List<ItemData> GetItems()
+    {
+        return items;
     }
 
     public void AddItem(ItemData item) {
@@ -20,5 +33,6 @@ public class Inventory : MonoBehaviour
         }
 
         items.Add(item);
+        InventoryUpdated?.Invoke();
     }
 }
