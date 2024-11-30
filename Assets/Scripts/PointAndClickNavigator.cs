@@ -47,6 +47,11 @@ public class PointAndClickNavigator : MonoBehaviour
             return null;
         }
 
+        const int FLOOR_LAYER = 6;
+
+        if(raycastHitInfo.collider.gameObject.layer != FLOOR_LAYER)
+            return null;
+
         return raycastHitInfo.point;
     }
 }
