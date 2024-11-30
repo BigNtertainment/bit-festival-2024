@@ -4,7 +4,7 @@ using Dialogues;
 public class BananaEatingTrigger : MonoBehaviour
 {
     DialogueTrigger dialogueTrigger;
-    
+
     private readonly DialogueLine _dialogueLine = new DialogueLine
     {
         CharacterName = "Executioner",
@@ -37,11 +37,13 @@ public class BananaEatingTrigger : MonoBehaviour
         dialogueTrigger = GetComponent<DialogueTrigger>();
     }
 
-    public void TriggerAnnouncement(ItemData _tool) {
+    public void TriggerBananaEating(ItemData _tool)
+    {
         dialogueTrigger.TriggerDialogue(_dialogueLine);
     }
 
-    static void EatBanana() {
+    static void EatBanana()
+    {
         GameObject executionerObject = GameObject.Find("Executioner");
         Executioner executioner = executionerObject.GetComponent<Executioner>();
         executioner.EatBanana();

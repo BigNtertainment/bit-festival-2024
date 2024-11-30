@@ -1,7 +1,8 @@
-using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.Events;
+using System.Linq;
 using System;
+using UnityEngine;
+using UnityEngine.Events;
+using SerializableDictionary.Scripts;
 
 public class Interactable : MonoBehaviour
 {
@@ -13,6 +14,10 @@ public class Interactable : MonoBehaviour
 
     [SerializeField]
     float reachableDistance = 2.5f;
+
+    [SerializeField]
+    SerializableDictionary<ItemData, float> reachableDistanceWithItem
+        = new SerializableDictionary<ItemData, float>();
 
     [SerializeField]
     private float outlineScale = 1.2f;
@@ -29,8 +34,6 @@ public class Interactable : MonoBehaviour
     private MovementIntention playerMovement;
     private Tooled playerTool;
 
-    private bool reachable = false;
-
     void Start()
     {
         interactableRenderer = GetComponent<Renderer>();
@@ -42,6 +45,7 @@ public class Interactable : MonoBehaviour
         playerTool = player.GetComponent<Tooled>();
     }
 
+
     void OnMouseOver()
     {
         // Set the scale on the shader material
@@ -50,6 +54,7 @@ public class Interactable : MonoBehaviour
             interactableRenderer.materials[1].SetFloat("_Scale", outlineScale);
         }
     }
+
 
     void OnMouseExit()
     {
@@ -67,9 +72,9 @@ public class Interactable : MonoBehaviour
             return;
         }
 
-        if (reachable)
+        if (IsReachable(playerTransform, playerTool.toolHeld))
         {
-            Interact(playerTool.toolHeld);
+            Interact(playerTransform, playerTool.toolHeld);
         }
         else
         {
@@ -85,22 +90,36 @@ public class Interactable : MonoBehaviour
 
     void Update()
     {
-        float distanceToPlayer = Vector3.Distance(
-            interactableTransform.position,
-            playerTransform.position
-        );
-
-        reachable = distanceToPlayer <= reachableDistance;
-
-        Color outlineColor = reachable ? reachableOutlineColor : unreachableOutlineColor;
-        if (playerInteractable && interactableRenderer)
+        if (playerInteractable)
         {
+            Color outlineColor = IsReachable(playerTransform, playerTool.toolHeld)
+                ? reachableOutlineColor : unreachableOutlineColor;
             interactableRenderer.materials[1].SetColor("_OutlineColor", outlineColor);
         }
     }
 
-    public void Interact(ItemData tool)
+    public void Interact(Transform source, ItemData tool)
     {
-        action.Invoke(tool);
+        if (IsReachable(source, tool))
+        {
+            action.Invoke(tool);
+        }
+    }
+
+    bool IsReachable(Transform byTransform, ItemData tool)
+    {
+        float distance = Vector3.Distance(
+            interactableTransform.position,
+            byTransform.position
+        );
+
+        if (tool && reachableDistanceWithItem.ContainsKey(tool))
+        {
+            return distance <= reachableDistanceWithItem.Get(tool);
+        }
+        else
+        {
+            return distance <= reachableDistance;
+        }
     }
 }
