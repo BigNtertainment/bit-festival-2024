@@ -8,6 +8,8 @@ public class Trapdoor : MonoBehaviour
 
     public List<GameObject> colliders = new List<GameObject>();
     private NavMeshObstacle navMeshObstacle;
+    
+    public CutToBlackSceneRestarter cutToBlackSceneRestarter;
 
     void Start()
     {
@@ -33,7 +35,6 @@ public class Trapdoor : MonoBehaviour
 
     private void OpenCutToBlackScreen()
     {
-        var cutToBlackSceneRestarter = FindFirstObjectByType<CutToBlackSceneRestarter>();
         cutToBlackSceneRestarter.CutToBlackAndRestartScene();
     }
 
