@@ -22,8 +22,19 @@ public class Trapdoor : MonoBehaviour
 
         foreach (GameObject obj in colliders)
         {
-            Debug.Log(obj.name + " fell through the hole :0");
+            if (obj.CompareTag("Player"))
+            {
+                OpenCutToBlackScreen();
+            }
+
+            Debug.Log($"{obj.name} fell through the trapdoor.");
         }
+    }
+
+    private void OpenCutToBlackScreen()
+    {
+        var cutToBlackSceneRestarter = FindFirstObjectByType<CutToBlackSceneRestarter>();
+        cutToBlackSceneRestarter.CutToBlackAndRestartScene();
     }
 
     void OnTriggerEnter(Collider collider)
