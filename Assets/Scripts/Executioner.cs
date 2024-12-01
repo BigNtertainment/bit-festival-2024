@@ -16,8 +16,8 @@ public class Executioner : MonoBehaviour
         FixingLever,
         FallenDown,
         Investigating,
-        LookingAround,
-        ChasingPlayer
+        ChasingPlayer,
+        StuckInAHole
     }
 
     [SerializeField]
