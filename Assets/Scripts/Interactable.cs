@@ -10,6 +10,9 @@ public class Interactable : MonoBehaviour
     UnityEvent<ItemData> action;
 
     [SerializeField]
+    bool playerInteractable = true;
+
+    [SerializeField]
     float reachableDistance = 2.5f;
 
     [SerializeField]
@@ -42,20 +45,33 @@ public class Interactable : MonoBehaviour
         playerTool = player.GetComponent<Tooled>();
     }
 
+
     void OnMouseOver()
     {
         // Set the scale on the shader material
-        interactableRenderer.materials[1].SetFloat("_Scale", outlineScale);
+        if (playerInteractable)
+        {
+            interactableRenderer.materials[1].SetFloat("_Scale", outlineScale);
+        }
     }
+
 
     void OnMouseExit()
     {
         // Set the scale to zero to disable the outline
-        interactableRenderer.materials[1].SetFloat("_Scale", 0.0f);
+        if (playerInteractable)
+        {
+            interactableRenderer.materials[1].SetFloat("_Scale", 0.0f);
+        }
     }
 
     void OnMouseDown()
     {
+        if (!playerInteractable)
+        {
+            return;
+        }
+
         if (IsReachable(playerTransform, playerTool.toolHeld))
         {
             Interact(playerTransform, playerTool.toolHeld);
@@ -74,9 +90,12 @@ public class Interactable : MonoBehaviour
 
     void Update()
     {
-        Color outlineColor = IsReachable(playerTransform, playerTool.toolHeld)
-            ? reachableOutlineColor : unreachableOutlineColor;
-        interactableRenderer.materials[1].SetColor("_OutlineColor", outlineColor);
+        if (playerInteractable)
+        {
+            Color outlineColor = IsReachable(playerTransform, playerTool.toolHeld)
+                ? reachableOutlineColor : unreachableOutlineColor;
+            interactableRenderer.materials[1].SetColor("_OutlineColor", outlineColor);
+        }
     }
 
     public void Interact(Transform source, ItemData tool)

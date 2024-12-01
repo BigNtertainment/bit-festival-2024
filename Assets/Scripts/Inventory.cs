@@ -9,9 +9,16 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] private List<ItemData> items = new();
 
+    private Tooled tooled;
+
     public event Action InventoryUpdated;
 
     public int? SelectedSlot { get; private set; }
+
+    void Start()
+    {
+        tooled = GetComponent<Tooled>();
+    }
 
     public bool AtCapacity()
     {
@@ -50,6 +57,11 @@ public class Inventory : MonoBehaviour
         var isSlotAlreadySelected = slot == SelectedSlot;
         SelectedSlot = isSlotAlreadySelected ? null : slot;
         InventoryUpdated?.Invoke();
+
+        if (SelectedSlot is { } selectedSlot)
+            tooled.toolHeld = items[selectedSlot];
+        else
+            tooled.toolHeld = null;
     }
 
     [CanBeNull]
