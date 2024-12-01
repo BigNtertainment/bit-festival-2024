@@ -2317,7 +2317,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9e17acf5af2d4b447885eea8cbb331da, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9e17acf5af2d4b447885eea8cbb331da, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2359,6 +2359,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 9e17acf5af2d4b447885eea8cbb331da, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 9e17acf5af2d4b447885eea8cbb331da, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 6a513868e6d5ca644974bc02a06f58b2, type: 2}
     - target: {fileID: 919132149155446097, guid: 9e17acf5af2d4b447885eea8cbb331da, type: 3}
       propertyPath: m_Name
       value: Executioner Sword
@@ -2431,8 +2439,8 @@ MonoBehaviour:
   reachableDistanceWithItem:
     _pairs: []
   outlineScale: 1.2
-  reachableOutlineColor: {r: 0, g: 0, b: 0, a: 0}
-  unreachableOutlineColor: {r: 0, g: 0, b: 0, a: 0}
+  reachableOutlineColor: {r: 1, g: 0.8117647, b: 0, a: 0}
+  unreachableOutlineColor: {r: 0.9882353, g: 0, b: 0, a: 0}
 --- !u!136 &1034480787
 CapsuleCollider:
   m_ObjectHideFlags: 0
