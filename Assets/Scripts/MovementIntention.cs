@@ -5,6 +5,7 @@ using UnityEngine.AI;
 public class MovementIntention : MonoBehaviour
 {
     private NavMeshAgent navMeshAgent;
+    private Animator animator;
 
     private Vector3 targetPosition;
     private Interactable targetInteractable = null;
@@ -13,18 +14,28 @@ public class MovementIntention : MonoBehaviour
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
         // If the NavMeshAgent finished walking to its target, perform the interaction
-        if (targetInteractable && !navMeshAgent.pathPending
+        if (!navMeshAgent.pathPending
             && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
-            targetInteractable.Interact(GetComponent<Transform>(), targetTool);
+            if (targetInteractable)
+            {
+                targetInteractable.Interact(GetComponent<Transform>(), targetTool);
 
-            targetInteractable = null;
-            targetTool = null;
+                targetInteractable = null;
+                targetTool = null;
+            }
+
+            animator.SetBool("walking", false);
+        }
+        else
+        {
+            animator.SetBool("walking", true);
         }
     }
 

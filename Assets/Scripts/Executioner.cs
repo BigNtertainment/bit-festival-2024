@@ -59,6 +59,8 @@ public class Executioner : MonoBehaviour
                 break;
 
             case State.Eating:
+                Debug.Log("Gonna eat a banana");
+
                 movement.SetDestination(
                     bananaEatingTrigger.GetComponent<Transform>().position,
                     bananaEatingTrigger.GetComponent<Interactable>()

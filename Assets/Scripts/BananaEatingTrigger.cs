@@ -17,7 +17,7 @@ public class BananaEatingTrigger : MonoBehaviour
                 NextDialogueLine = new DialogueLine
                 {
                     CharacterName = "Executioner",
-                    Text = "Nobody asked your opinion.",
+                    Text = "Nobody asked for your opinion.",
                     Answers = new DialogueAnswer[]
                     {
                         new()
