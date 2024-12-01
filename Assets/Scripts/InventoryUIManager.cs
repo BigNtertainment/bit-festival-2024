@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,7 +11,9 @@ public class InventoryUIManager : MonoBehaviour
     private Inventory _playerInventory;
     private readonly List<GameObject> _itemSlots = new();
 
+    [SerializeField] public TextMeshProUGUI selectedItemText;
     [SerializeField] public Transform itemSlotContainer;
+
     [SerializeField] public GameObject itemSlotPrefab;
 
     private void Start()
@@ -44,6 +47,9 @@ public class InventoryUIManager : MonoBehaviour
     {
         var items = _playerInventory.GetItems();
 
+        var selectedItemName = GetSelectedItemName();
+        selectedItemText.text = selectedItemName;
+
         for (var i = 0; i < _itemSlots.Count; i++)
         {
             var itemSlot = _itemSlots[i];
@@ -54,6 +60,16 @@ public class InventoryUIManager : MonoBehaviour
             UpdateItemSlotBackground(itemSlot, i == _playerInventory.SelectedSlot);
             UpdateItemSlotImage(itemSlot, itemData);
         }
+    }
+
+    private string GetSelectedItemName()
+    {
+        if (_playerInventory.GetSelectedItem() is { } selectedItem)
+        {
+            return selectedItem.name;
+        }
+
+        return string.Empty;
     }
 
     private void UpdateItemSlotBackground(GameObject itemSlot, bool isSelected)

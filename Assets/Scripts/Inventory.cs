@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 public class Inventory : MonoBehaviour
 {
@@ -49,5 +50,16 @@ public class Inventory : MonoBehaviour
         var isSlotAlreadySelected = slot == SelectedSlot;
         SelectedSlot = isSlotAlreadySelected ? null : slot;
         InventoryUpdated?.Invoke();
+    }
+
+    [CanBeNull]
+    public ItemData GetSelectedItem()
+    {
+        if (SelectedSlot is not { } selectedSlotIndex)
+        {
+            return null;
+        }
+
+        return items[selectedSlotIndex];
     }
 }
