@@ -53,16 +53,21 @@ public class DialogueManager : MonoBehaviour
         // Create new buttons
         foreach (var dialogueAnswer in dialogueAnswers)
         {
-            var dialogAnswerButton = Instantiate(answerButtonPrefab, dialogueWindow);
-            dialogAnswerButton.GetComponentInChildren<TextMeshProUGUI>().text = dialogueAnswer.Text;
-            dialogAnswerButton.GetComponent<Button>().onClick.AddListener(() => OnAnswerSelected(dialogueAnswer));
+            var dialogAnswerButton = CreateAnswerButton(dialogueAnswer);
             _instantiatedButtons.Add(dialogAnswerButton);
         }
     }
 
+    private GameObject CreateAnswerButton(DialogueAnswer dialogueAnswer)
+    {
+        var dialogueAnswerButton = Instantiate(answerButtonPrefab, dialogueWindow);
+        dialogueAnswerButton.GetComponentInChildren<TextMeshProUGUI>().text = dialogueAnswer.Text;
+        dialogueAnswerButton.GetComponent<Button>().onClick.AddListener(() => OnAnswerSelected(dialogueAnswer));
+        return dialogueAnswerButton;
+    }
+
     private void OnAnswerSelected(DialogueAnswer dialogueAnswer)
     {
-        dialogueAnswer.OnClickAction?.Invoke();
         if (dialogueAnswer.NextDialogueLine is { } nextDialogueLine)
         {
             _currentDialogueLine = nextDialogueLine;
@@ -71,7 +76,10 @@ public class DialogueManager : MonoBehaviour
         else
         {
             HideDialogUI();
+            _currentDialogueLine = null;
         }
+
+        dialogueAnswer.OnClickAction?.Invoke();
     }
 
     private void ShowDialogUI()
@@ -82,5 +90,10 @@ public class DialogueManager : MonoBehaviour
     private void HideDialogUI()
     {
         dialogueWindow.gameObject.SetActive(false);
+    }
+
+    public bool IsDialogueRunning()
+    {
+        return _currentDialogueLine is not null;
     }
 }

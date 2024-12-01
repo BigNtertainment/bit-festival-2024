@@ -3,14 +3,37 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    public void TriggerDialogue(DialogueLine dialogueLine)
+    private DialogueManager _dialogueManager;
+
+    private void Start()
     {
-        if (FindFirstObjectByType<DialogueManager>() is not { } dialogueManager)
+        UpdateDialogueManager();
+    }
+
+    private void UpdateDialogueManager()
+    {
+        if (_dialogueManager is not null)
         {
-            Debug.LogWarning("No DialogueManager found.");
             return;
         }
 
-        dialogueManager.StartDialogue(dialogueLine);
+        _dialogueManager = FindFirstObjectByType<DialogueManager>();
+
+        if (_dialogueManager is null)
+        {
+            Debug.LogWarning("No DialogueManager found.");
+        }
+    }
+
+    public void TriggerDialogue(DialogueLine dialogueLine)
+    {
+        UpdateDialogueManager();
+        _dialogueManager?.StartDialogue(dialogueLine);
+    }
+
+    public bool IsDialogueRunning()
+    {
+        UpdateDialogueManager();
+        return _dialogueManager?.IsDialogueRunning() ?? false;
     }
 }
