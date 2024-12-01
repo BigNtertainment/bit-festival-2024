@@ -8,6 +8,8 @@ public class Trapdoor : MonoBehaviour
 
     public List<GameObject> colliders = new List<GameObject>();
     private NavMeshObstacle navMeshObstacle;
+    
+    public CutToBlackSceneRestarter cutToBlackSceneRestarter;
 
     void Start()
     {
@@ -22,8 +24,18 @@ public class Trapdoor : MonoBehaviour
 
         foreach (GameObject obj in colliders)
         {
-            Debug.Log(obj.name + " fell through the hole :0");
+            if (obj.CompareTag("Player"))
+            {
+                OpenCutToBlackScreen();
+            }
+
+            Debug.Log($"{obj.name} fell through the trapdoor.");
         }
+    }
+
+    private void OpenCutToBlackScreen()
+    {
+        cutToBlackSceneRestarter.CutToBlackAndRestartScene();
     }
 
     void OnTriggerEnter(Collider collider)
