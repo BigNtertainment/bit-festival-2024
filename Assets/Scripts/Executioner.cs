@@ -1,19 +1,21 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
+using System;
 
 public class Executioner : MonoBehaviour
 {
     private MovementIntention movement;
     private Transform executionerTransform;
 
+    [Serializable]
     public enum State
     {
         Announcing,
         Eating,
         Hanging,
         FixingLever,
-        Investing,
+        FallenDown,
+        Investigating,
         LookingAround,
         ChasingPlayer
     }
@@ -28,12 +30,22 @@ public class Executioner : MonoBehaviour
     GameObject bananaEatingTrigger;
 
     [SerializeField]
+    GameObject lever;
+
+    [SerializeField]
+    GameObject trapdoor;
+
+    [SerializeField]
     GameObject bananaPeelPrefab;
+
+    GameObject player;
 
     void Start()
     {
         movement = GetComponent<MovementIntention>();
         executionerTransform = GetComponent<Transform>();
+
+        player = GameObject.FindWithTag("Player");
     }
 
     void OnStateChange()
@@ -53,6 +65,36 @@ public class Executioner : MonoBehaviour
                     bananaEatingTrigger.GetComponent<Interactable>()
                 );
                 break;
+
+            case State.Hanging:
+            case State.FixingLever:
+                if (!trapdoor.GetComponent<Trapdoor>().colliders.Contains(player))
+                {
+                    // TODO: Make it a dialogue
+                    Debug.Log("Where is she?");
+
+                    currentState = State.Investigating;
+
+                    break;
+                }
+
+                movement.SetDestination(
+                    lever.GetComponent<Transform>().position,
+                    lever.GetComponent<Interactable>()
+                );
+                break;
+
+            case State.FallenDown:
+                StopAllCoroutines();
+                StartCoroutine(StandingUp());
+                break;
+
+            case State.Investigating:
+                movement.SetDestination(
+                    trapdoor.GetComponent<Transform>().position,
+                    trapdoor.GetComponent<Interactable>()
+                );
+                break;
         }
     }
 
@@ -64,8 +106,16 @@ public class Executioner : MonoBehaviour
         {
             // TODO: If in dialogue, wait with changing the state
 
-            OnStateChange();
             prevState = currentState;
+            OnStateChange();
+        }
+
+        if (currentState == State.ChasingPlayer)
+        {
+            movement.SetDestination(
+                player.GetComponent<Transform>().position,
+                player.GetComponent<Interactable>()
+            );
         }
     }
 
@@ -88,6 +138,41 @@ public class Executioner : MonoBehaviour
         currentState = State.Hanging;
     }
 
+    public void FixLever(LeverMechanism lever)
+    {
+        StartCoroutine(FixingLever(lever));
+    }
+
+    IEnumerator FixingLever(LeverMechanism lever)
+    {
+        yield return new WaitForSeconds(5.0f);
+
+        lever.broken = false;
+
+        // TODO: Add some dialogue here
+
+        currentState = State.Hanging;
+    }
+
+    IEnumerator StandingUp()
+    {
+        yield return new WaitForSeconds(5.0f);
+
+        currentState = State.FixingLever;
+    }
+
+    public void LookAroundForPlayer()
+    {
+        StartCoroutine(LookingAround());
+    }
+
+    IEnumerator LookingAround()
+    {
+        yield return new WaitForSeconds(5.0f);
+
+        currentState = State.ChasingPlayer;
+    }
+
     public void HandleInteractions(ItemData item)
     {
         if (!item)
@@ -97,16 +182,25 @@ public class Executioner : MonoBehaviour
             return;
         }
 
-        if (item.itemName == "stone")
+        if (item.itemName == "pebble")
         {
-            if (currentState == State.ChasingPlayer)
+            if (currentState == State.ChasingPlayer
+                || currentState == State.FallenDown)
             {
+                Debug.Log("nie bij leżącego");
                 return;
             }
 
             if (currentState == State.FixingLever)
             {
-                // TODO: Fall over and lose dagger
+                currentState = State.FallenDown;
+                Debug.Log("Ouch");
+                return;
+            }
+
+            if (currentState == State.Investigating)
+            {
+                currentState = State.ChasingPlayer;
                 return;
             }
 
