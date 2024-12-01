@@ -39,6 +39,7 @@ public class Executioner : MonoBehaviour
     GameObject bananaPeelPrefab;
 
     GameObject player;
+    DialogueTrigger dialogueTrigger;
 
     void Start()
     {
@@ -46,6 +47,8 @@ public class Executioner : MonoBehaviour
         executionerTransform = GetComponent<Transform>();
 
         player = GameObject.FindWithTag("Player");
+
+        dialogueTrigger = GetComponent<DialogueTrigger>();
     }
 
     void OnStateChange()
@@ -67,7 +70,6 @@ public class Executioner : MonoBehaviour
                 break;
 
             case State.Hanging:
-            case State.FixingLever:
                 if (!trapdoor.GetComponent<Trapdoor>().colliders.Contains(player))
                 {
                     // TODO: Make it a dialogue
@@ -78,6 +80,14 @@ public class Executioner : MonoBehaviour
                     break;
                 }
 
+                movement.SetDestination(
+                    lever.GetComponent<Transform>().position,
+                    lever.GetComponent<Interactable>()
+                );
+
+                break;
+
+            case State.FixingLever:
                 movement.SetDestination(
                     lever.GetComponent<Transform>().position,
                     lever.GetComponent<Interactable>()
@@ -94,6 +104,19 @@ public class Executioner : MonoBehaviour
                     trapdoor.GetComponent<Transform>().position,
                     trapdoor.GetComponent<Interactable>()
                 );
+                break;
+
+            case State.StuckInAHole:
+                dialogueTrigger.TriggerDialogue(new Dialogues.DialogueLine
+                {
+                    CharacterName = "Executioner",
+                    Text = "I got stuck! I should've watched my weight like Annie told me to.",
+                    Answers = new Dialogues.DialogueAnswer[] {
+                        new() {
+                            Text = "Hmm..."
+                        }
+                    }
+                });
                 break;
         }
     }
@@ -159,6 +182,10 @@ public class Executioner : MonoBehaviour
         yield return new WaitForSeconds(5.0f);
 
         currentState = State.FixingLever;
+
+        // I don't know why but it doesnt work without this
+        // and i dont have the time to actually fix that
+        lever.GetComponent<LeverMechanism>().broken = false;
     }
 
     public void LookAroundForPlayer()

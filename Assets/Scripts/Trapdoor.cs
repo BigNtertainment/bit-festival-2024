@@ -4,11 +4,12 @@ using UnityEngine.AI;
 
 public class Trapdoor : MonoBehaviour
 {
+    [SerializeField]
     bool open = false;
 
     public List<GameObject> colliders = new List<GameObject>();
     private NavMeshObstacle navMeshObstacle;
-    
+
     public CutToBlackSceneRestarter cutToBlackSceneRestarter;
 
     void Start()
@@ -29,7 +30,11 @@ public class Trapdoor : MonoBehaviour
                 OpenCutToBlackScreen();
             }
 
-            Debug.Log($"{obj.name} fell through the trapdoor.");
+            if (obj.CompareTag("Executioner"))
+            {
+                Executioner executioner = obj.GetComponent<Executioner>();
+                executioner.currentState = Executioner.State.StuckInAHole;
+            }
         }
     }
 
@@ -40,11 +45,15 @@ public class Trapdoor : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
+        Debug.Log(collider.gameObject.name + " entered");
+
         colliders.Add(collider.gameObject);
     }
 
     void OnTriggerExit(Collider collider)
     {
+        Debug.Log(collider.gameObject.name + " exited");
+
         colliders.Remove(collider.gameObject);
     }
 }

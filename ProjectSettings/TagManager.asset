@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - BananaPeel
+  - Executioner
   layers:
   - Default
   - TransparentFX

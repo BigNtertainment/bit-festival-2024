@@ -33,6 +33,7 @@ public class Interactable : MonoBehaviour
     private Transform playerTransform;
     private MovementIntention playerMovement;
     private Tooled playerTool;
+    private Inventory playerInventory;
 
     void Start()
     {
@@ -43,6 +44,7 @@ public class Interactable : MonoBehaviour
         playerTransform = player.GetComponent<Transform>();
         playerMovement = player.GetComponent<MovementIntention>();
         playerTool = player.GetComponent<Tooled>();
+        playerInventory = player.GetComponent<Inventory>();
     }
 
 
@@ -103,6 +105,10 @@ public class Interactable : MonoBehaviour
         if (IsReachable(source, tool))
         {
             action.Invoke(tool);
+            if (tool)
+            {
+                playerInventory.RemoveItem(tool);
+            }
         }
     }
 

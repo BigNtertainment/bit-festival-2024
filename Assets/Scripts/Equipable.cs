@@ -7,23 +7,30 @@ public class Equipable : MonoBehaviour
 
     [SerializeField]
     bool oneTimeUse = true;
-    
+
     private Inventory playerInventory;
-    
-    void Start() {
+
+    void Start()
+    {
         GameObject player = GameObject.FindWithTag("Player");
         playerInventory = player.GetComponent<Inventory>();
     }
 
-    public void PickUp(ItemData tool) {
-        if(tool != null) {
+    public void PickUp(ItemData tool)
+    {
+        if (tool != null)
+        {
+            Debug.Log("AAA: " + tool);
+
             return;
         }
 
-        if(!playerInventory.AtCapacity()) {
+        if (!playerInventory.AtCapacity())
+        {
             playerInventory.AddItem(item);
 
-            if(oneTimeUse) {
+            if (oneTimeUse)
+            {
                 Destroy(gameObject);
             }
         }

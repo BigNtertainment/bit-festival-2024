@@ -13,7 +13,19 @@ public class Inventory : MonoBehaviour
 
     public event Action InventoryUpdated;
 
-    public int? SelectedSlot { get; private set; }
+    int? _SelectedSlot;
+    public int? SelectedSlot
+    {
+        get { return _SelectedSlot; }
+        private set
+        {
+            _SelectedSlot = value;
+            if (tooled)
+            {
+                tooled.toolHeld = GetSelectedItem();
+            }
+        }
+    }
 
     void Start()
     {
@@ -44,6 +56,18 @@ public class Inventory : MonoBehaviour
         }
 
         items.Add(item);
+
+        Debug.Log(items);
+
+        InventoryUpdated?.Invoke();
+    }
+
+    public void RemoveItem(ItemData item)
+    {
+        if (GetSelectedItem() == item)
+            SelectedSlot = null;
+
+        items.Remove(item);
         InventoryUpdated?.Invoke();
     }
 
