@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class CutToBlackSceneRestarter : MonoBehaviour
 {
+    public AudioSource deathAudioSource;
     public GameObject blackScreenPanel;
 
     public void CutToBlackAndRestartScene()
     {
         blackScreenPanel.SetActive(true);
+        deathAudioSource.Play();
 
         var waitForSecondsJob = WaitForSeconds(1f).Then(RestartScene);
         StartCoroutine(waitForSecondsJob);
