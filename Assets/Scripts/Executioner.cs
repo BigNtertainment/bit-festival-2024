@@ -20,23 +20,19 @@ public class Executioner : MonoBehaviour
         StuckInAHole
     }
 
-    [SerializeField]
-    public State? currentState = State.Announcing;
+    [SerializeField] public State? currentState = State.Announcing;
 
-    [SerializeField]
-    GameObject announcementTrigger;
+    [SerializeField] GameObject announcementTrigger;
 
-    [SerializeField]
-    GameObject bananaEatingTrigger;
+    [SerializeField] GameObject bananaEatingTrigger;
 
-    [SerializeField]
-    GameObject lever;
+    [SerializeField] GameObject lever;
 
-    [SerializeField]
-    GameObject trapdoor;
+    [SerializeField] GameObject trapdoor;
 
-    [SerializeField]
-    GameObject bananaPeelPrefab;
+    [SerializeField] GameObject bananaPeelPrefab;
+
+    [SerializeField] GameObject executionerSword;
 
     GameObject player;
     DialogueTrigger dialogueTrigger;
@@ -221,7 +217,7 @@ public class Executioner : MonoBehaviour
             if (currentState == State.FixingLever)
             {
                 currentState = State.FallenDown;
-                Debug.Log("Ouch");
+                DropSwordIfEquipped();
                 return;
             }
 
@@ -237,5 +233,23 @@ public class Executioner : MonoBehaviour
 
             currentState = State.Hanging;
         }
+    }
+
+    void DropSwordIfEquipped()
+    {
+        var executionerSwordParent = executionerSword.transform.parent;
+
+        if (executionerSwordParent != gameObject.transform)
+        {
+            return;
+        }
+
+        DetachSword();
+    }
+
+    void DetachSword()
+    {
+        executionerSword.transform.parent = null;
+        executionerSword.GetComponent<Rigidbody>().isKinematic = false;
     }
 }
